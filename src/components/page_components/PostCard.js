@@ -35,9 +35,9 @@ class PostCard extends React.Component {
             <Button variant="outline-primary" className="mr-auto">
               View post
             </Button>
-            <Button className="mr-auto">
-              {" "}
+            <Button variant="outline-primary" className="mr-auto">
               <BsHandThumbsUp></BsHandThumbsUp>
+              {" " + this.props.post.postNumOfThumb}
             </Button>
           </Card.Body>
         </Card>
