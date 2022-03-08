@@ -15,10 +15,12 @@ class PostCard extends React.Component {
       if (l > 0) while (i < l) h = ((h << 5) - h + cardTitle.charCodeAt(i++)) | 0;
       return h;
     };
+
     var postImgSrc;
     if (this.props.post.postImg === undefined) {
       postImgSrc = "./img/pics/" + hashForImages(this.props.post.postTitle)%10 + ".jpg" 
     }
+    
     return (
       <div className="postcard">
         <Card

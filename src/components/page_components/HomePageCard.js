@@ -15,7 +15,8 @@ class HomePageCard extends React.Component {
     const cardText = this.info.cardText;
     const buttonText = this.info.buttonText;
     const color = this.info.color;
-    const disabledButton = this.info.disabled
+    const disabledButton = this.info.disabled;
+    const href = this.info.href;
     return (
       <div className="homepagecard">
         <Card
@@ -27,13 +28,13 @@ class HomePageCard extends React.Component {
             <Card.Title> {cardTitle} </Card.Title>
             <Card.Text>{cardText}</Card.Text>
             {(buttonText !== "" && !disabledButton) && (
-              <Button variant="outline-primary" className="mr-auto">
+              <Button variant="outline-primary" className="mr-auto" href={href}>
                 {buttonText}
               </Button>
             )}
             
             {(buttonText !== "" && disabledButton) && (
-              <Button variant="outline-primary" className="mr-auto" disabled>
+              <Button variant="outline-primary" className="mr-auto" disabled href={href}>
                 Signin to Go
               </Button>
             )} 

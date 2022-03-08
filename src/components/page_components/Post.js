@@ -15,17 +15,27 @@ class Post extends React.Component {
       if (l > 0) while (i < l) h = ((h << 5) - h + cardTitle.charCodeAt(i++)) | 0;
       return h;
     };
+
     var postImgSrc;
     if (this.props.post.postImg === undefined) {
-      postImgSrc = "./img/full-pics/" + hashForImages(this.props.post.postTitle)%10 + ".jpg" 
+      postImgSrc = "../img/full-pics/" + hashForImages(this.props.post.postTitle)%10 + ".jpg" 
     }
+
+    var postLastUpdatedTime = new Date(this.props.post.postLastUpdatedTime)
+    var date = postLastUpdatedTime.getDate()+
+          "/"+(postLastUpdatedTime.getMonth()+1)+
+          "/"+postLastUpdatedTime.getFullYear()+
+          " "+postLastUpdatedTime.getHours()+
+          ":"+postLastUpdatedTime.getMinutes()+
+          ":"+postLastUpdatedTime.getSeconds(); 
+
     return (
       <div className="post">
         <Card
           style={{ width: "78%" }}
           className="h-100 shadow-sm bg-white rounded"
         >
-          <Card.Img variant="top" src={postImgSrc} alt="" width={this.width} height={this.width*0.2}/>
+          <Card.Img variant="top" src={postImgSrc} alt="" width={this.width} height="100%"/>
           <Card.Header>Author: {this.props.post.username}</Card.Header>
           <Card.Body>
             <Card.Title> {this.props.post.postTitle} </Card.Title>
@@ -36,8 +46,8 @@ class Post extends React.Component {
               <BsHandThumbsUp></BsHandThumbsUp>
               {this.props.post.postNumOfThumb}
             </Button>
-            <Card.Footer className="text-muted">
-                Last updated: {this.props.post.postLastUpdatedTime}
+            <Card.Footer className="text-muted" fontSize="sm">
+                Last updated: {date}
             </Card.Footer>
           </Card.Body>
         </Card>
