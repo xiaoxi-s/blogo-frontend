@@ -16,13 +16,14 @@ class PostPageInner extends React.Component {
       showSignModalType: this.info.showSignModalType,
       searchText: this.info.searschText,
       cookies: this.info.cookies,
-      posts: []
+      posts: this.props.posts == undefined ? [] : this.props.posts // depending on whether a post is given
     };
   }
 
   componentDidMount() {
     this.getposts = this.getPosts.bind(this)
-    this.getPosts()
+    if (this.props.posts == undefined) // if a post is already given, just render it!
+      this.getPosts()
   }
 
   getPosts() {
