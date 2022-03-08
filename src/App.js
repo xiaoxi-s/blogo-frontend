@@ -9,6 +9,7 @@ import DailyPage from "./components/DailyPage";
 import CategoriesPage from "./components/CategoriesPage";
 import AboutPage from "./components/AboutPage";
 import PostPage from "./components/PostPage";
+import RandomPage from "./components/RandomPage";
 
 // Create routings and associated pages
 const Main = (props) => (
@@ -45,7 +46,9 @@ const Main = (props) => (
       path="/about"
       element={<AboutPage info={props.info} key="aboutpage"></AboutPage>}
     ></Route>
-    <Route path="/post" element={<PostPage></PostPage>}></Route>
+    <Route exact path="/posts/:postID" element={<PostPage info={props.info}/>}>  </Route>
+    <Route exact path="/random-post" element={<RandomPage></RandomPage>}>
+    </Route>
   </Routes>
 );
 
