@@ -7,7 +7,7 @@ const getRandomPost = (setPosts) => {
     fetch("http://localhost:8080/random-post")
       .then((response) => response.json())
       .then((data) => {
-        setPosts([data], console.log(data))
+        setPosts([data])
     });
   } catch (e) {
    setPosts([]) 
@@ -17,7 +17,6 @@ const getRandomPost = (setPosts) => {
 const RandomPage = (info) => {
     const [posts, setPosts] = useState([])
     getRandomPost(setPosts)
-    console.log(posts)
     return posts.length > 0 ? <Navigate to={"/posts/" + posts[0].postID}></Navigate> : "";
 };
 
