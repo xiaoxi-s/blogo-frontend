@@ -28,20 +28,19 @@ class SignupForm extends React.Component {
       }),
     };
     console.log(this.state.username + this.state.password);
-    var responseJSON = fetch(
+    fetch(
       "http://localhost:8080/signup",
       requestOptions
-    ).then((response) => {
-      return response.json();
+    ).then((response) => (response.json()))
+    .then((responseJSON) => {
+      if (responseJSON.error != undefined) {
+        this.setState({ signinFailInfo: responseJSON.error});
+        console.log("Sign up failed");
+      } else {
+        this.submitButtonCallback(responseJSON);
+        console.log("Sign up success");
+      }
     });
-    console.log(responseJSON);
-    if (responseJSON.has("error")) {
-      this.setState({ signupFailInfo: responseJSON.get("error") });
-      console.log("Sign up failed");
-    } else {
-      this.submitButtonCallback(responseJSON);
-      console.log("Sign up success");
-    }
   }
 
   render() {
@@ -105,24 +104,23 @@ class SigninForm extends React.Component {
         password: this.state.password,
       }),
     };
-    var responseJSON = fetch(
+    fetch(
       "http://localhost:8080/signin",
       requestOptions
-    ).then((response) => {
-      return response.json();
+    ).then((response) => (response.json()))
+    .then((responseJSON) => {
+      if (responseJSON.error != undefined) {
+        this.setState({ signinFailInfo: responseJSON.error});
+        console.log("Sign in failed");
+      } else {
+        this.submitButtonCallback(responseJSON);
+        console.log("Sign in success");
+      }
     });
-    console.log(responseJSON);
-    if (responseJSON.has("error")) {
-      this.setState({ signinFailInfo: responseJSON.get("error") });
-      console.log("Sign in failed");
-    } else {
-      this.submitButtonCallback(responseJSON);
-      console.log("Sign in success");
-    }
   }
 
   render() {
-    const submitForSignVerification = this.submitForSignVerification;
+    const submitForSigninVerification = this.submitForSigninVerification;
     return (
       <Form>
         <Form.Text>{this.state.signinFailInfo}</Form.Text>
@@ -147,7 +145,7 @@ class SigninForm extends React.Component {
           variant="primary"
           type="submit"
           onClick={() => {
-            submitForSignVerification();
+            submitForSigninVerification();
           }}
         >
           Submit
