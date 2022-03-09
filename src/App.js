@@ -11,7 +11,7 @@ import AboutPage from "./components/AboutPage";
 import PostPage from "./components/PostPage";
 import RandomPage from "./components/RandomPage";
 
-var myStorage = window.localStorage
+var myStorage = window.sessionStorage
 
 // Create routings and associated pages
 const Main = (props) => (
@@ -61,7 +61,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.info = {};
-    this.info.signin = localStorage.getItem("signin") == undefined ? false : localStorage.getItem("signin");
+    this.info.signin = myStorage.getItem("signin") == undefined ? false : myStorage.getItem("signin");
     this.info.showSignModalType = "";
     this.info.searchText = "";
     this.info.cookies = "";
@@ -87,9 +87,9 @@ class App extends React.Component {
     // callbacks
     const appSubmitSignButtonCallbackFunc = (responseJSON) => {
       this.info.signin = true;
-      localStorage.removeItem("signin")
-      localStorage.setItem("signin", true)
-      console.log(localStorage.getItem("signin"))
+      myStorage.removeItem("signin")
+      myStorage.setItem("signin", true)
+      console.log(myStorage.getItem("signin"))
       this.info.cookies = responseJSON.cookies;
     };
 
