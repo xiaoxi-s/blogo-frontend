@@ -10,7 +10,7 @@ const cardsOnFirstRow = [
     cardTitle: "Post",
     cardText: "Read a new post",
     buttonText: "Go!",
-    href: "/posts/random-post",
+    href: "/random-post",
     color: "Primary",
     disabled: false,
   },
