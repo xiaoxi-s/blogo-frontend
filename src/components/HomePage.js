@@ -62,7 +62,7 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const signin = false;
+    const signin = this.info.signin;
 
     // Not signed in yet!
     if (!signin) {
