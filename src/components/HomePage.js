@@ -1,8 +1,6 @@
 import React from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
-import BlogNavbar from "./page_components/BlogNavbar";
-import SignModal from "./page_components/SignModal";
 import HomePageCard from "./page_components/HomePageCard";
 
 const cardsOnFirstRow = [
@@ -60,42 +58,14 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.info = props.info;
-    this.state = {
-      signin: this.info.signin,
-      showSignModalType: this.info.showSignModalType,
-      searchText: this.info.searschText,
-      cookies: this.info.cookies,
-    };
+    this.state = {};
   }
 
   render() {
-    const submitSignButtonCallback = (responseJSON) => {
-      this.setState({
-        signin: true,
-        cookies: responseJSON.cookies,
-      });
-      this.info.appSubmitSignButtonCallback();
-    };
-
-    const closeSignButtonCallback = () => {
-      this.setState({
-        showSignModalType: "",
-      });
-      this.info.appCloseSignButtonCallback();
-    };
-
-    const showSignModalCallback = (newSignModalType) => {
-      this.setState({
-        showSignModalType: newSignModalType,
-      });
-      this.info.appShowSignModalCallback();
-    };
-
-    const signinStatus = this.state.signin;
-    const showSignModalTypeStatus = this.state.showSignModalType;
+    const signin = false;
 
     // Not signed in yet!
-    if (!signinStatus) {
+    if (!signin) {
       cardsOnSecondRow[0].disabled = true;
       cardsOnSecondRow[1].disabled = true;
       cardsOnSecondRow[2].disabled = true;
@@ -103,46 +73,27 @@ class HomePage extends React.Component {
 
     return (
       <div>
-        <Container>
-          <Row>
-            <BlogNavbar
-              signin={signinStatus}
-              showSignModalCallback={showSignModalCallback}
-            ></BlogNavbar>
-          </Row>
-        </Container>
-
-        {/* Sign in/Sign up modal */}
-        {(showSignModalTypeStatus === "signin" ||
-          showSignModalTypeStatus === "signup") && (
-          <SignModal
-            showSignModalType={showSignModalTypeStatus}
-            closeSignButtonCallback={closeSignButtonCallback}
-            submitSignButtonCallback={submitSignButtonCallback}
-            key={showSignModalTypeStatus + "Modal"}
-          ></SignModal>
-        )}
         {
           <Container>
             <Row key="row-1" xs={3} md={3} lg={3}>
-              {cardsOnFirstRow.map((info) => {
+              {cardsOnFirstRow.map((card) => {
                 return (
-                  <Col key={"row-1" + info.cardTitle}>
+                  <Col key={"row-1" + card.cardTitle}>
                     <HomePageCard
-                      info={info}
-                      key={info.cardTitle}
+                      info={card}
+                      key={card.cardTitle}
                     ></HomePageCard>
                   </Col>
                 );
               })}
             </Row>
             <Row key={"row-2"}>
-              {cardsOnSecondRow.map((info) => {
+              {cardsOnSecondRow.map((card) => {
                 return (
-                  <Col key={"row-2" + info.cardTitle}>
+                  <Col key={"row-2" + card.cardTitle}>
                     <HomePageCard
-                      info={info}
-                      key={info.cardTitle}
+                      info={card}
+                      key={card.cardTitle}
                     ></HomePageCard>
                   </Col>
                 );

@@ -7,20 +7,23 @@ const getRandomPost = (setPosts) => {
     fetch("http://localhost:8080/random-post")
       .then((response) => response.json())
       .then((data) => {
-        setPosts([data])
-    });
+        setPosts([data]);
+      });
   } catch (e) {
-   setPosts([]) 
-}
+    setPosts([]);
+  }
 };
 
 const RandomPage = (info) => {
-    const [posts, setPosts] = useState([])
-    useEffect(() => {
-      getRandomPost(setPosts)
-
-    }, [])
-    return posts.length > 0 ? <Navigate to={"/posts/" + posts[0].postID}></Navigate> : "";
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    getRandomPost(setPosts);
+  }, []);
+  return posts.length > 0 ? (
+    <Navigate to={"/posts/" + posts[0].postID}></Navigate>
+  ) : (
+    ""
+  );
 };
 
 export default RandomPage;
