@@ -61,16 +61,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.info = {};
-    this.info.signin = myStorage.getItem("signin") == undefined ? false : myStorage.getItem("signin");
+    this.info.signin = myStorage.getItem("signin") === null ? false : myStorage.getItem("signin");
     this.info.showSignModalType = "";
     this.info.searchText = "";
     this.info.cookies = "";
     this.info.posts = [];
     this.username = "";
-
-    console.log(localStorage.getItem(
-      "signin"
-    ))
   }
 
   getPosts() {
