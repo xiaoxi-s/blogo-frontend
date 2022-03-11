@@ -1,100 +1,52 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { Container, Row, Col } from "react-bootstrap";
-import BlogNavbar from "./page_components/BlogNavbar";
-import SignModal from "./page_components/SignModal";
+import { Row } from "react-bootstrap";
 import Post from "./page_components/Post";
-
 
 class PostPageInner extends React.Component {
   constructor(props) {
     super(props);
     this.info = props.info;
     this.state = {
-      signin: this.info.signin,
-      showSignModalType: this.info.showSignModalType,
-      searchText: this.info.searschText,
-      cookies: this.info.cookies,
-      posts: this.props.posts == undefined ? [] : this.props.posts // depending on whether a post is given
+      posts: this.props.posts === undefined ? [] : this.props.posts, // depending on whether a post is given
     };
   }
 
   componentDidMount() {
-    this.getposts = this.getPosts.bind(this)
-    if (this.props.posts == undefined) // if a post is already given, just render it!
-      this.getPosts()
+    this.getPost = this.getPost.bind(this);
+    if (this.props.posts === undefined)
+      // if a post is already given, just render it!
+      this.getPost();
   }
 
-  getPosts() {
+  getPost() {
     try {
       fetch("http://localhost:8080/posts/" + this.props.postID)
-      .then((response) => response.json())
-      .then((data) => {this.setState({posts: [data]})})
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ posts: [data] });
+        });
     } catch (e) {
-      this.setState({posts: []})
+      this.setState({ posts: [] });
     }
   }
 
   render() {
-    const signinStatus = this.state.signin;
-    const showSignModalTypeStatus = this.state.showSignModalType; // tell Modal to determin sign in or sign up form
-    const posts = this.state.posts 
-     
-    const submitSignButtonCallback = (responseJSON) => {
-      this.setState({
-        signin: true,
-        cookies: responseJSON.cookies,
-      });
-      this.info.appSubmitSignButtonCallback();
-    };
-
-    const closeSignButtonCallback = () => {
-      this.setState({
-        showSignModalType: "",
-      });
-      this.info.appCloseSignButtonCallback();
-    };
-
-    const showSignModalCallback = (newSignModalType) => {
-      this.setState({
-        showSignModalType: newSignModalType,
-      });
-      this.info.appShowSignModalCallback();
-    };
+    const posts = this.state.posts;
     return (
       <div>
-        <Container>
-          <Row>
-            <BlogNavbar
-              signin={signinStatus}
-              showSignModalCallback={showSignModalCallback}
-            ></BlogNavbar>
-          </Row>
-        </Container>
-
-        {/* Sign in/Sign up modal */}
-        {(showSignModalTypeStatus === "signin" ||
-          showSignModalTypeStatus === "signup") && (
-          <SignModal
-            showSignModalType={showSignModalTypeStatus}
-            closeSignButtonCallback={closeSignButtonCallback}
-            submitSignButtonCallback={submitSignButtonCallback}
-            key={showSignModalTypeStatus + "Modal"}
-          ></SignModal>
+        {posts.length === 1 && (
+          <div className="posts-div">
+            {posts.map((post, ind) => {
+              return (
+                <Row key={"row-" + post.postID}>
+                  <Post post={post} key={post.postID}></Post>
+                </Row>
+              );
+            })}
+          </div>
         )}
-
-        {posts.length === 1 && <div className='posts-div'>
-            { 
-              posts.map((post, ind) => {
-                return (
-                  <Row key={"row-" + post.postID}>
-                    <Post post={post} key={post.postID}></Post>
-                  </Row>
-                )
-              })
-            }
-        </div>}
       </div>
     );
   }
@@ -102,10 +54,7 @@ class PostPageInner extends React.Component {
 
 const PostPage = (props) => {
   let { postID } = useParams("postID");
-  console.log("postID from useParams: " + postID);
-  // postID = "621e99bd15a6b7573db72732";
-  console.log(props.info)
   return <PostPageInner postID={postID} info={props.info}></PostPageInner>;
-}
+};
 
 export default PostPage;

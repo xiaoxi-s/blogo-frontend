@@ -1,7 +1,12 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
+
+import { Container, Row } from "react-bootstrap"
 import { Routes, Route } from "react-router-dom";
+
+import BlogNavbar from "./components/page_components/BlogNavbar";
+import SignModal from "./components/page_components/SignModal";
 
 import HomePage from "./components/HomePage";
 import PostsPage from "./components/PostsPage";
@@ -60,13 +65,13 @@ const Main = (props) => (
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.info = {};
-    this.info.signin = myStorage.getItem("signin") === null ? false : myStorage.getItem("signin");
-    this.info.showSignModalType = "";
-    this.info.searchText = "";
-    this.info.cookies = "";
-    this.info.posts = [];
-    this.username = "";
+    this.state = {
+      signin: myStorage.getItem("signin") === null ? false : myStorage.getItem("signin"),
+      showSignModalType: "",
+      searchText: "",
+      cookies: [],
+      username: ""
+    }
   }
 
   getPosts() {
@@ -80,42 +85,64 @@ class App extends React.Component {
   getProfile() {}
 
   render() {
+    const signin = this.state.signin
+    const showSignModalType = this.state.showSignModalType
     // callbacks
-    const appSubmitSignButtonCallbackFunc = (responseJSON) => {
-      this.info.signin = true;
+    const appSignModalSubmitButtonCallback = (responseJSON) => {
       myStorage.removeItem("signin")
       myStorage.setItem("signin", true)
       console.log(myStorage.getItem("signin"))
-      this.info.cookies = responseJSON.cookies;
+      this.setState({
+        signin: true,
+        cookies: responseJSON.cookies
+      })
+      // this.info.signin = true;
+      // this.info.cookies = responseJSON.cookies;
     };
 
-    const appCloseSignButtonCallbackFunc = () => {
-      this.info.showSignModalType = "";
+    const appSignModalCloseButtonCallback = () => {
+      this.setState({
+        showSignModalType: ""
+      })
+      // this.info.showSignModalType = "";
     };
 
-    const appShowSignModalCallbackFunc = (newSignModalType) => {
-      this.info.showSignModalType = newSignModalType;
+    const appShowSignModalCallback = (newSignModalType) => {
+      this.setState({
+        showSignModalType: newSignModalType
+      })
+      // this.info.showSignModalType = newSignModalType;
     };
 
-    const newInfo = {
-      signin: this.info.signin,
-      showSignModalType: this.info.showSignModalType,
-      appShowSignModalCallback: appShowSignModalCallbackFunc,
-      appCloseSignButtonCallback: appCloseSignButtonCallbackFunc,
-      appSubmitSignButtonCallback: appSubmitSignButtonCallbackFunc,
-    };
+    const infoForPageComponent = {
+      signin: this.state.signin,
+      showSignModalType: this.state.showSignModalType,
+      searchText: this.state.searchText,
+      cookies: this.state.cookies,
+      username: this.state.username
+    } 
     return (
-      <div
-        // style={{
-        //   backgroundImage: 'url("./img/background.jpg")',
-        //   backgroundPosition: "center",
-        //   backgroundSize: "cover",
-        //   backgroundRepeat: "no-repeat",
-        //   width: "100vw",
-        //   height: "100vh",
-        // }}
-      >
-          <Main info={newInfo} key="main-app"></Main>{" "}
+      <div>
+        <Container>
+          <Row>
+            <BlogNavbar
+              signin={signin}
+              showSignModalCallback={appShowSignModalCallback}
+            ></BlogNavbar>
+          </Row>
+        </Container>
+
+        {/* Sign in/Sign up modal */}
+        {(showSignModalType === "signin" ||
+          showSignModalType === "signup") && (
+          <SignModal
+            showSignModalType={showSignModalType}
+            closeSignButtonCallback={appSignModalCloseButtonCallback}
+            submitSignButtonCallback={appSignModalSubmitButtonCallback}
+            key={showSignModalType + "Modal"}
+          ></SignModal>
+        )}
+          <Main info={infoForPageComponent} key="main-app"></Main>{" "}
       </div>
     );
   }
