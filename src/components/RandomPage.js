@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 const getRandomPost = (setPosts) => {
@@ -16,7 +16,10 @@ const getRandomPost = (setPosts) => {
 
 const RandomPage = (info) => {
     const [posts, setPosts] = useState([])
-    getRandomPost(setPosts)
+    useEffect(() => {
+      getRandomPost(setPosts)
+
+    }, [])
     return posts.length > 0 ? <Navigate to={"/posts/" + posts[0].postID}></Navigate> : "";
 };
 
