@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { Row } from "react-bootstrap";
 import Post from "./page_components/Post";
+import Comment from "./page_components/Comment"
 
 class PostPageInner extends React.Component {
   constructor(props) {
@@ -10,14 +11,17 @@ class PostPageInner extends React.Component {
     this.info = props.info;
     this.state = {
       posts: this.props.posts === undefined ? [] : this.props.posts, // depending on whether a post is given
+      comments: []
     };
   }
 
   componentDidMount() {
     this.getPost = this.getPost.bind(this);
+    this.getPostComments = this.getPostComments.bind(this)
     if (this.props.posts === undefined)
       // if a post is already given, just render it!
       this.getPost();
+    this.getPostComments()
   }
 
   getPost() {
@@ -32,8 +36,21 @@ class PostPageInner extends React.Component {
     }
   }
 
+  getPostComments() {
+    fetch("http://localhost:8080/comments/" + this.props.postID)
+      .then((response) => response.json())
+      .then((responesJSON) => {
+        this.setState({ comments: responesJSON });
+      })
+      .catch((e) => {
+        this.setState({ comments: [] });
+      });
+  }
+
   render() {
     const posts = this.state.posts;
+    const comments = this.state.comments;
+    console.log(this.state.comments)
     return (
       <div>
         {posts.length === 1 && (
@@ -47,6 +64,17 @@ class PostPageInner extends React.Component {
             })}
           </div>
         )}
+        {
+          comments.length >= 1 && (
+            comments.map((comment, ind) => {
+              return (
+                <Row key={"row" + comment.commentID}>
+                  <Comment comment={comment}></Comment>
+                </Row>
+              )
+            })    
+          )
+        }
       </div>
     );
   }

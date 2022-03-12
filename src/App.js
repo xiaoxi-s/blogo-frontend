@@ -119,6 +119,7 @@ class App extends React.Component {
       searchText: this.state.searchText,
       username: this.state.username
     } 
+
     return (
       <div>
         <Container>
