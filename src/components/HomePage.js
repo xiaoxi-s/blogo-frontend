@@ -35,6 +35,7 @@ const cardsOnSecondRow = [
     cardTitle: "Write a Post",
     cardText: "Tell your stories, express your feelings ...",
     buttonText: "Go!",
+    href: "/write-post",
     color: "Warning",
     disabled: false,
   },
@@ -62,7 +63,7 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const signin = false;
+    const signin = this.info.signin;
 
     // Not signed in yet!
     if (!signin) {

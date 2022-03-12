@@ -19,7 +19,9 @@ class PostsPage extends React.Component {
 
   getPosts() {
     try {
-      fetch("http://localhost:8080/posts")
+      fetch("http://localhost:8080/posts", {
+          credentials: "same-origin",
+        })
         .then((response) => response.json())
         .then((data) => {
           this.setState({ posts: data });

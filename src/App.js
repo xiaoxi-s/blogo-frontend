@@ -15,6 +15,7 @@ import CategoriesPage from "./components/CategoriesPage";
 import AboutPage from "./components/AboutPage";
 import PostPage from "./components/PostPage";
 import RandomPage from "./components/RandomPage";
+import WritePostPage from "./components/WritePostPage";
 
 var myStorage = window.sessionStorage
 
@@ -54,6 +55,7 @@ const Main = (props) => (
       element={<AboutPage info={props.info} key="aboutpage"></AboutPage>}
     ></Route>
     <Route exact path="/posts/:postID" element={<PostPage info={props.info}/>}>  </Route>
+    <Route exact path="/write-post" element={<WritePostPage info={props.info}/>}></Route>
     <Route exact path="/random-post" element={<RandomPage></RandomPage>}>
     </Route>
   </Routes>
@@ -69,8 +71,7 @@ class App extends React.Component {
       signin: myStorage.getItem("signin") === null ? false : myStorage.getItem("signin"),
       showSignModalType: "",
       searchText: "",
-      cookies: [],
-      username: ""
+      username: myStorage.getItem("username") === null ? "" : myStorage.getItem("username") 
     }
   }
 
@@ -88,37 +89,34 @@ class App extends React.Component {
     const signin = this.state.signin
     const showSignModalType = this.state.showSignModalType
     // callbacks
-    const appSignModalSubmitButtonCallback = (responseJSON) => {
+    const appSignModalSubmitButtonCallback = (updatedUsername) => {
       myStorage.removeItem("signin")
       myStorage.setItem("signin", true)
-      console.log(myStorage.getItem("signin"))
+      myStorage.removeItem("username") 
+      myStorage.setItem("username", updatedUsername)
+
       this.setState({
         signin: true,
-        cookies: responseJSON.cookies
-      })
-      // this.info.signin = true;
-      // this.info.cookies = responseJSON.cookies;
+        username: updatedUsername 
+      }) 
     };
 
     const appSignModalCloseButtonCallback = () => {
       this.setState({
         showSignModalType: ""
       })
-      // this.info.showSignModalType = "";
     };
 
     const appShowSignModalCallback = (newSignModalType) => {
       this.setState({
         showSignModalType: newSignModalType
       })
-      // this.info.showSignModalType = newSignModalType;
     };
 
     const infoForPageComponent = {
       signin: this.state.signin,
       showSignModalType: this.state.showSignModalType,
       searchText: this.state.searchText,
-      cookies: this.state.cookies,
       username: this.state.username
     } 
     return (
