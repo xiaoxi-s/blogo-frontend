@@ -13,7 +13,7 @@ class PostCard extends React.Component {
         l = cardTitle.length,
         i = 0;
       if (l > 0) while (i < l) h = ((h << 5) - h + cardTitle.charCodeAt(i++)) | 0;
-      return h;
+      return Math.abs(h);
     };
 
     var postImgSrc;
