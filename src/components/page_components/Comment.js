@@ -6,9 +6,9 @@ import { BsHandThumbsUp } from "react-icons/bs";
 class Comments extends React.Component {
   render() {
     return (
-      <div className="postcard">
+      <div className="commentcard">
         <Card
-          style={{ width: "60%" }}
+          style={{ width: "62%" }}
           className="h-100 shadow-sm bg-white rounded"
         >
           <Card.Body>
