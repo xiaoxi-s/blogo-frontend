@@ -34,7 +34,7 @@ class PostCard extends React.Component {
               {this.props.post.postContent.slice(0, 200)}
               {this.props.post.postContent.length > 200 && <p>...</p>}
             </Card.Text>
-            <Button variant="outline-primary" className="mr-auto">
+            <Button variant="outline-primary" className="mr-auto" href={"/posts/" + this.props.post.postID}>
               View post
             </Button>
             <Button variant="outline-primary" className="mr-auto">
