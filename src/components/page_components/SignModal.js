@@ -22,26 +22,24 @@ class SignupForm extends React.Component {
   submitForSignupVerification() {
     const requestOptions = {
       method: "POST",
+      credentials: 'include',
+      withCredentials: true,
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
       }),
     };
-    console.log(this.state.username + this.state.password);
-    var responseJSON = fetch(
+    fetch(
       "http://localhost:8080/signup",
       requestOptions
-    ).then((response) => {
-      return response.json();
+    ).then((response) => (response.json()))
+    .then((responseJSON) => {
+      if (responseJSON.error != undefined) {
+        this.setState({ signinFailInfo: responseJSON.error});
+      } else {
+        this.submitButtonCallback(this.state.username);
+      }
     });
-    console.log(responseJSON);
-    if (responseJSON.has("error")) {
-      this.setState({ signupFailInfo: responseJSON.get("error") });
-      console.log("Sign up failed");
-    } else {
-      this.submitButtonCallback(responseJSON);
-      console.log("Sign up success");
-    }
   }
 
   render() {
@@ -83,6 +81,7 @@ class SignupForm extends React.Component {
 class SigninForm extends React.Component {
   constructor(props) {
     super(props);
+    this.username = props.username
     this.submitButtonCallback = props.submitButtonCallback;
     this.closeButtonCallback = props.closeButtonCallback;
     this.state = {
@@ -100,29 +99,28 @@ class SigninForm extends React.Component {
   submitForSigninVerification() {
     const requestOptions = {
       method: "POST",
+      credentials: 'include',
+      withCredentials: true,
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
       }),
     };
-    var responseJSON = fetch(
+    fetch(
       "http://localhost:8080/signin",
       requestOptions
-    ).then((response) => {
-      return response.json();
+    ).then((response) => response.json())
+    .then((responseJSON) => {
+      if (responseJSON.error != undefined) {
+        this.setState({ signinFailInfo: responseJSON.error});
+      } else {
+        this.submitButtonCallback(this.state.username);
+      }
     });
-    console.log(responseJSON);
-    if (responseJSON.has("error")) {
-      this.setState({ signinFailInfo: responseJSON.get("error") });
-      console.log("Sign in failed");
-    } else {
-      this.submitButtonCallback(responseJSON);
-      console.log("Sign in success");
-    }
   }
 
   render() {
-    const submitForSignVerification = this.submitForSignVerification;
+    const submitForSigninVerification = this.submitForSigninVerification;
     return (
       <Form>
         <Form.Text>{this.state.signinFailInfo}</Form.Text>
@@ -147,7 +145,7 @@ class SigninForm extends React.Component {
           variant="primary"
           type="submit"
           onClick={() => {
-            submitForSignVerification();
+            submitForSigninVerification();
           }}
         >
           Submit
