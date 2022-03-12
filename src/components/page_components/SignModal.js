@@ -22,12 +22,13 @@ class SignupForm extends React.Component {
   submitForSignupVerification() {
     const requestOptions = {
       method: "POST",
+      credentials: 'include',
+      withCredentials: true,
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
       }),
     };
-    console.log(this.state.username + this.state.password);
     fetch(
       "http://localhost:8080/signup",
       requestOptions
@@ -35,10 +36,8 @@ class SignupForm extends React.Component {
     .then((responseJSON) => {
       if (responseJSON.error != undefined) {
         this.setState({ signinFailInfo: responseJSON.error});
-        console.log("Sign up failed");
       } else {
-        this.submitButtonCallback(responseJSON);
-        console.log("Sign up success");
+        this.submitButtonCallback(this.state.username);
       }
     });
   }
@@ -82,6 +81,7 @@ class SignupForm extends React.Component {
 class SigninForm extends React.Component {
   constructor(props) {
     super(props);
+    this.username = props.username
     this.submitButtonCallback = props.submitButtonCallback;
     this.closeButtonCallback = props.closeButtonCallback;
     this.state = {
@@ -99,6 +99,8 @@ class SigninForm extends React.Component {
   submitForSigninVerification() {
     const requestOptions = {
       method: "POST",
+      credentials: 'include',
+      withCredentials: true,
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
@@ -107,14 +109,12 @@ class SigninForm extends React.Component {
     fetch(
       "http://localhost:8080/signin",
       requestOptions
-    ).then((response) => (response.json()))
+    ).then((response) => response.json())
     .then((responseJSON) => {
       if (responseJSON.error != undefined) {
         this.setState({ signinFailInfo: responseJSON.error});
-        console.log("Sign in failed");
       } else {
-        this.submitButtonCallback(responseJSON);
-        console.log("Sign in success");
+        this.submitButtonCallback(this.state.username);
       }
     });
   }
