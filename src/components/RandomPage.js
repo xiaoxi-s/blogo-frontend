@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 const getRandomPost = (setPosts) => {
   try {
-    fetch("http://localhost:8080/random-post")
+    fetch(process.env.REACT_APP_REQUEST_URI + "/random-post")
       .then((response) => response.json())
       .then((data) => {
         setPosts([data]);
@@ -21,8 +21,8 @@ const RandomPage = (info) => {
   }, []);
   return posts.length > 0 ? (
     <Navigate to={"/posts/" + posts[0].postID}></Navigate>
-  ) : (
-    ""
+  ) : ( 
+    <Navigate to={"/"}></Navigate>
   );
 };
 

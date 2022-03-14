@@ -75,7 +75,7 @@ class App extends React.Component {
   }
 
   getPosts() {
-    fetch("http://localhost:8080/posts")
+    fetch(process.env.REACT_APP_REQUEST_URI + "/posts")
       .then((response) => response.json())
       .then((data) => this.setState({ posts: data }));
   }
@@ -113,7 +113,7 @@ class App extends React.Component {
     };
 
     const appSignOutCallback = () => {
-      fetch("http://localhost:8080/signout", {method: "POST"})
+      fetch(process.env.REACT_APP_REQUEST_URI + "/signout", {method: "POST"})
       myStorage.removeItem("signin")
       myStorage.removeItem("username")
       this.setState({

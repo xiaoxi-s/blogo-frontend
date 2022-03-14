@@ -38,7 +38,7 @@ class PostPageInner extends React.Component {
 
   getPost() {
     try {
-      fetch("http://localhost:8080/posts/" + this.props.postID)
+      fetch(process.env.REACT_APP_REQUEST_URI + "/posts/" + this.props.postID)
         .then((response) => response.json())
         .then((data) => {
           this.setState({ posts: [data] });
@@ -49,7 +49,7 @@ class PostPageInner extends React.Component {
   }
 
   getPostComments() {
-    fetch("http://localhost:8080/comments/" + this.props.postID)
+    fetch(process.env.REACT_APP_REQUEST_URI + "/comments/" + this.props.postID)
       .then((response) => response.json())
       .then((responesJSON) => {
         this.setState({ comments: responesJSON });
