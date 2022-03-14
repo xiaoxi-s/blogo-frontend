@@ -19,7 +19,7 @@ class PostsPage extends React.Component {
 
   getPosts() {
     try {
-      fetch("http://localhost:8080/posts", {
+      fetch(process.env.REACT_APP_REQUEST_URI + "/posts", {
           credentials: "same-origin",
         })
         .then((response) => response.json())

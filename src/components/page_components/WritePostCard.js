@@ -84,7 +84,7 @@ class WritePostCard extends React.Component {
         }),
       };
 
-      fetch("http://localhost:8080/posts", requestOptions)
+      fetch(process.env.REACT_APP_REQUEST_URI + "/posts", requestOptions)
         .then((response) => response.json())
         .then((responseJSON) => {
           if (responseJSON.error !== undefined) {
