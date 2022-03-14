@@ -113,12 +113,14 @@ class App extends React.Component {
     };
 
     const appSignOutCallback = () => {
+      fetch("http://localhost:8080/signout", {method: "POST"})
       myStorage.removeItem("signin")
       myStorage.removeItem("username")
       this.setState({
         signin: false,
         username: ""
       })
+      document.cookie = ""
     }
     
     const infoForPageComponent = {
