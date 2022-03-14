@@ -61,8 +61,6 @@ const Main = (props) => (
   </Routes>
 );
 
-
-
 // Front-end App to run
 class App extends React.Component {
   constructor(props) {
@@ -71,7 +69,8 @@ class App extends React.Component {
       signin: myStorage.getItem("signin") === null ? false : myStorage.getItem("signin"),
       showSignModalType: "",
       searchText: "",
-      username: myStorage.getItem("username") === null ? "" : myStorage.getItem("username") 
+      username: myStorage.getItem("username") === null ? "" : myStorage.getItem("username"),
+      childPage: undefined
     }
   }
 
@@ -113,6 +112,17 @@ class App extends React.Component {
       })
     };
 
+    const appSignOutCallback = () => {
+      fetch("http://localhost:8080/signout", {method: "POST"})
+      myStorage.removeItem("signin")
+      myStorage.removeItem("username")
+      this.setState({
+        signin: false,
+        username: ""
+      })
+      document.cookie = ""
+    }
+    
     const infoForPageComponent = {
       signin: this.state.signin,
       showSignModalType: this.state.showSignModalType,
@@ -126,6 +136,8 @@ class App extends React.Component {
           <Row>
             <BlogNavbar
               signin={signin}
+              myStorage={myStorage}
+              appSignOutCallback={appSignOutCallback}
               showSignModalCallback={appShowSignModalCallback}
             ></BlogNavbar>
           </Row>
@@ -141,7 +153,8 @@ class App extends React.Component {
             key={showSignModalType + "Modal"}
           ></SignModal>
         )}
-          <Main info={infoForPageComponent} key="main-app"></Main>{" "}
+        { this.state.signin && <Main info={infoForPageComponent} key="main-app-signin"></Main>}
+        { !this.state.signin && <Main info={infoForPageComponent} key="main-app-signout"></Main>}
       </div>
     );
   }
