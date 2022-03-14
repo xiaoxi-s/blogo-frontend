@@ -70,6 +70,10 @@ class HomePage extends React.Component {
       cardsOnSecondRow[0].disabled = true;
       cardsOnSecondRow[1].disabled = true;
       cardsOnSecondRow[2].disabled = true;
+    } else {
+      cardsOnSecondRow[0].disabled = false;
+      cardsOnSecondRow[1].disabled = false;
+      cardsOnSecondRow[2].disabled = false;
     }
 
     return (
