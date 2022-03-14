@@ -5,15 +5,21 @@ import { NavLink } from "react-router-dom";
 
 class BlogNavbar extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.signin = props.signin;
+    this.signin = props.signin
 
-    this.showSignModalCallback = props.showSignModalCallback;
+    this.myStorage = props.myStorage
+    this.showSignModalCallback = props.showSignModalCallback
+    this.appSignoutCallback = props.appSignOutCallback
   }
 
   render() {
-    const signin = this.signin;
+    const signin = this.signin
+    const signOutCallback = () => {
+      this.signin = false
+      this.appSignoutCallback()
+    }
     const showSignModalCallback = this.showSignModalCallback;
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -61,7 +67,7 @@ class BlogNavbar extends React.Component {
               Signup
             </Button>
           )}
-          {signin && <>Signed in!</>}
+          {signin && <Button onClick={signOutCallback}>Sign Out</Button>}
         </Container>
       </Navbar>
     );
