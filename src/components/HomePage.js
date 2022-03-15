@@ -64,7 +64,6 @@ class HomePage extends React.Component {
 
   render() {
     const signin = this.info.signin;
-
     // Not signed in yet!
     if (!signin) {
       cardsOnSecondRow[0].disabled = true;
@@ -78,7 +77,35 @@ class HomePage extends React.Component {
 
     return (
       <div>
-        {
+        { !signin &&
+          <Container>
+            <Row key="row-1" xs={3} md={3} lg={3}>
+              {cardsOnFirstRow.map((card) => {
+                return (
+                  <Col key={"row-1" + card.cardTitle}>
+                    <HomePageCard
+                      info={card}
+                      key={card.cardTitle}
+                    ></HomePageCard>
+                  </Col>
+                );
+              })}
+            </Row>
+            <Row key={"row-2"}>
+              {cardsOnSecondRow.map((card) => {
+                return (
+                  <Col key={"row-2" + card.cardTitle}>
+                    <HomePageCard
+                      info={card}
+                      key={card.cardTitle}
+                    ></HomePageCard>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Container>
+        }
+        { signin &&
           <Container>
             <Row key="row-1" xs={3} md={3} lg={3}>
               {cardsOnFirstRow.map((card) => {
