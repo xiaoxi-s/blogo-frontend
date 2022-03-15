@@ -30,7 +30,7 @@ class SignupForm extends React.Component {
       }),
     };
     fetch(
-      "http://localhost:8080/signup",
+      process.env.REACT_APP_REQUEST_URI + "/signup",
       requestOptions
     ).then((response) => (response.json()))
     .then((responseJSON) => {
@@ -107,7 +107,7 @@ class SigninForm extends React.Component {
       }),
     };
     fetch(
-      "http://20.127.128.101:8080/signin",
+      process.env.REACT_APP_REQUEST_URI + "/signin",
       requestOptions
     ).then((response) => response.json())
     .then((responseJSON) => {
