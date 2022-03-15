@@ -39,7 +39,7 @@ class WriteCommentCard extends React.Component {
       };
 
       fetch(
-        "http://localhost:8080/comments/" + this.info.postID,
+        process.env.REACT_APP_REQUEST_URI + "/comments/" + this.info.postID,
         requestOptions
       )
         .then((response) => response.json())
