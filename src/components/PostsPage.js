@@ -5,16 +5,22 @@ import PostCard from "./page_components/PostCard";
 
 class PostsPage extends React.Component {
   constructor(props) {
-    super(props);
-    this.info = props.info;
+    super(props)
+    this.info = props.info
+    this.username = this.info.username
+    
     this.state = {
       posts: [],
+      postsThumbupedByUser: [],
     };
   }
 
   componentDidMount() {
     this.getPosts = this.getPosts.bind(this);
+    this.getPostsIDThumbupedByUser = this.getPostsIDThumbupedByUser.bind(this)
     this.getPosts();
+    console.log(this.info.signin)
+    this.getPostsIDThumbupedByUser()
   }
 
   getPosts() {
@@ -31,17 +37,48 @@ class PostsPage extends React.Component {
     }
   }
 
+  getPostsIDThumbupedByUser() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": [
+          "Origin",
+          "Content-Type",
+          "Access-Control-Request-Credentials",
+          "Cookie",
+          "Access-Control-Request-Methods",
+        ],
+        "Access-Control-Request-Methods": ["GET"],
+      },
+      withCredentials: true,
+      credentials: "include",
+    }
+    fetch(process.env.REACT_APP_REQUEST_URI + "/posts/thumbupedby/" + this.info.username, requestOptions)
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        this.setState({ postsThumbupedByUser: responseJSON });
+      })
+      .catch((e) => {
+        this.setState({ postsThumbupedByUser: [] });
+      })
+  }
+
   render() {
     const posts = this.state.posts;
-
     return (
       <div>
         {posts.length > 0 && (
           <div className="posts-div">
             {posts.map((post, ind) => {
+              const thumbup = (post.username === this.info.username || this.state.postsThumbupedByUser.includes(post.postID))
               return (
-                <Row key={"row-" + post.ID}>
-                  <PostCard post={post} key={post.ID}></PostCard>
+                <Row key={"row-" + post.postID}>
+                  <PostCard  
+                   info={{post: post, thumbup: thumbup, signin: this.info.signin, username: this.info.username}} 
+                   thumbupButtonCallback={this.getPostsIDThumbupedByUser}
+                  ></PostCard>
                 </Row>
               );
             })}

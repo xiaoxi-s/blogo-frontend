@@ -66,7 +66,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      signin: myStorage.getItem("signin") === null ? false : myStorage.getItem("signin"),
+      signin: myStorage.getItem("signin") === null ? false : myStorage.getItem("signin") == 'true',
       showSignModalType: "",
       searchText: "",
       username: myStorage.getItem("username") === null ? "" : myStorage.getItem("username"),
@@ -97,7 +97,7 @@ class App extends React.Component {
       this.setState({
         signin: true,
         username: updatedUsername 
-      }, ()=>console.log(this.state.signin)) 
+      }) 
     };
 
     const appSignModalCloseButtonCallback = () => {
