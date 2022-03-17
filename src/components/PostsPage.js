@@ -20,7 +20,9 @@ class PostsPage extends React.Component {
     this.getPostsIDThumbupedByUser = this.getPostsIDThumbupedByUser.bind(this)
     this.getPosts();
     console.log(this.info.signin)
-    this.getPostsIDThumbupedByUser()
+    if (this.info.signin) {
+      this.getPostsIDThumbupedByUser()
+    }
   }
 
   getPosts() {

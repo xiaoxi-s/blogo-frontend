@@ -38,7 +38,9 @@ class PostPageInner extends React.Component {
       // if a post is already given, just render it!
       this.getPost()
     this.getPostComments()
-    this.getCommentsThumbupedByUser() 
+    if (this.info.signin) {
+      this.getCommentsThumbupedByUser() 
+    }
   }
 
   getPost() {
