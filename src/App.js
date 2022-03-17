@@ -97,7 +97,7 @@ class App extends React.Component {
       this.setState({
         signin: true,
         username: updatedUsername 
-      }) 
+      }, ()=>console.log(this.state.signin)) 
     };
 
     const appSignModalCloseButtonCallback = () => {
@@ -129,7 +129,6 @@ class App extends React.Component {
       searchText: this.state.searchText,
       username: this.state.username
     } 
-
     return (
       <div>
         <Container>

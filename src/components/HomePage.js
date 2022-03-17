@@ -74,8 +74,8 @@ class HomePage extends React.Component {
       cardsOnSecondRow[1].disabled = false;
       cardsOnSecondRow[2].disabled = false;
     }
-
-    return (
+    
+    return ( 
       <div>
         { !signin &&
           <Container>
