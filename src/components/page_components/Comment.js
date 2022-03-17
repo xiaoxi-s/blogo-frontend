@@ -13,10 +13,10 @@ class Comment extends React.Component {
     this.thumbuped = this.info.thumbuped
     this.thumbupButtonCallback = this.props.thumbupButtonCallback
 
-    this.thumbupPost = this.thumbupPost.bind(this)
+    this.thumbupComment = this.thumbupComment.bind(this)
   }
 
-  thumbupPost() {
+  thumbupComment() {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -54,6 +54,7 @@ class Comment extends React.Component {
 
 
   render() {
+    
     return (
       <div className="commentcard">
         <Card
@@ -63,7 +64,7 @@ class Comment extends React.Component {
           <Card.Body>
             <Card.Title> {this.info.comment.username} </Card.Title>
             <Card.Text>{this.info.comment.commentContent}</Card.Text>
-            <Button variant="outline-primary" disabled={(!this.signin || this.thumbuped)} onClick={this.thumbupPost}>
+            <Button variant="outline-primary" disabled={(!this.signin || this.thumbuped)} onClick={this.thumbupComment}>
               <BsHandThumbsUp></BsHandThumbsUp>
               {this.info.comment.numOfThumb}
             </Button>
