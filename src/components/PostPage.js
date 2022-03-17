@@ -24,16 +24,21 @@ class PostPageInner extends React.Component {
     this.state = {
       posts: this.props.posts === undefined ? [] : this.props.posts, // depending on whether a post is given
       comments: [],
+      commentsIDByUser: [],
+      commentsIDThumbupedByUser: [],
     };
   }
 
   componentDidMount() {
-    this.getPost = this.getPost.bind(this);
-    this.getPostComments = this.getPostComments.bind(this);
+    this.getPost = this.getPost.bind(this)
+    this.getPostComments = this.getPostComments.bind(this)
+    this.getCommentsByUser = this.getCommentsByUser.bind(this)
+    this.getCommentsThumbupedByUser = this.getCommentsThumbupedByUser.bind(this)
     if (this.props.posts === undefined)
       // if a post is already given, just render it!
-      this.getPost();
-    this.getPostComments();
+      this.getPost()
+    this.getPostComments()
+    this.getCommentsThumbupedByUser() 
   }
 
   getPost() {
@@ -56,6 +61,63 @@ class PostPageInner extends React.Component {
       })
       .catch((e) => {
         this.setState({ comments: [] });
+      });
+  }
+
+  getCommentsByUser() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": [
+          "Origin",
+          "Content-Type",
+          "Access-Control-Request-Credentials",
+          "Cookie",
+          "Access-Control-Request-Methods",
+        ],
+        "Access-Control-Request-Methods": ["GET"],
+      },
+      withCredentials: true,
+      credentials: "include",
+    };
+    fetch(process.env.REACT_APP_REQUEST_URI + "/comments/by/" + this.info.username, requestOptions)
+      .then((response) => response.json())
+      .then((responesJSON) => {
+        this.setState({ commentsIDByUser: responesJSON });
+      })
+      .catch((e) => {
+        this.setState({ commentsIDByUser: [] });
+      });
+  }
+
+  getCommentsThumbupedByUser() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": [
+          "Origin",
+          "Content-Type",
+          "Access-Control-Request-Credentials",
+          "Cookie",
+          "Access-Control-Request-Methods",
+        ],
+        "Access-Control-Request-Methods": ["GET"],
+      },
+      withCredentials: true,
+      credentials: "include",
+    };
+    fetch(process.env.REACT_APP_REQUEST_URI + "/comments/thumbupedby/" + this.info.username, requestOptions)
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        console.log(responseJSON)
+        this.setState({ commentsIDThumbupedByUser: responseJSON });
+      })
+      .catch((e) => {
+        this.setState({ commentsIDThumbupedByUser: [] });
       });
   }
 
@@ -85,9 +147,20 @@ class PostPageInner extends React.Component {
         {<WriteCommentCard info={writeCommentInfo}></WriteCommentCard>}
         {comments.length >= 1 &&
           comments.map((comment, ind) => {
+            console.log("comment id: " + comment.commentID)
+            console.log(this.state.commentsIDThumbupedByUser.includes(comment.commentID))
+            console.log(this.state.commentsIDThumbupedByUser)
             return (
               <Row key={"row" + comment.commentID}>
-                <Comment info={{comment: comment, signin: this.info.signin}}></Comment>
+                <Comment info={{comment: comment, 
+                                username: this.info.username,
+                                signin: this.info.signin, 
+                                thumbuped: comment.username === this.info.username || this.state.commentsIDThumbupedByUser.includes(comment.commentID)
+                }}
+                         thumbupButtonCallback={this.getCommentsThumbupedByUser}
+                >
+                </Comment>
+
               </Row>
             );
           })}
