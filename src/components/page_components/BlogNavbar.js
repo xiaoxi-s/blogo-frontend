@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
 import { Nav, Container, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 class BlogNavbar extends React.Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class BlogNavbar extends React.Component {
               Signup
             </Button>
           )}
-          {signin && <Button onClick={signOutCallback}>Sign Out</Button>}
+          {signin && <Link to="/home" onClick={signOutCallback}>Sign Out</Link>}
         </Container>
       </Navbar>
     );
