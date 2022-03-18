@@ -26,6 +26,7 @@ class PostPageInner extends React.Component {
       comments: [],
       commentsIDByUser: [],
       commentsIDThumbupedByUser: [],
+      postsThumbupedByUser: [],
     };
   }
 
