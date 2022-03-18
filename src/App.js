@@ -97,7 +97,7 @@ class App extends React.Component {
       this.setState({
         signin: true,
         username: updatedUsername 
-      }) 
+      }, () => {setInterval(this.setState({signin: true, username: updatedUsername}), 500)}) 
     };
 
     const appSignModalCloseButtonCallback = () => {
@@ -119,7 +119,7 @@ class App extends React.Component {
       this.setState({
         signin: false,
         username: ""
-      })
+      }, () => {setInterval(this.setState({signin: false, username: ""}), 500)})
       document.cookie = ""
     }
     
