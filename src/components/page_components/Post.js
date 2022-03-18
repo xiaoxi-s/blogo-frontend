@@ -7,6 +7,11 @@ import { BsHandThumbsUp } from "react-icons/bs";
 import './Post.css'
 
 class Post extends React.Component {
+  constructor(props) {
+    super(props)
+    this.info = props.info
+    this.thumbupPostButtonCallback = props.thumbupPostButtonCallback 
+  }
   render() {
     const hashForImages = function (cardTitle) {
       var h = 0,
@@ -28,7 +33,6 @@ class Post extends React.Component {
           " "+postLastUpdatedTime.getHours()+
           ":"+postLastUpdatedTime.getMinutes()+
           ":"+postLastUpdatedTime.getSeconds(); 
-
     return (
       <div className="post">
         <Card
@@ -42,7 +46,7 @@ class Post extends React.Component {
             <Card.Text>
               {this.props.post.postContent}
             </Card.Text>
-            <Button variant="outline-primary" className="mr-auto">
+            <Button variant="outline-primary" className="mr-auto" disabled={ (!this.info.signin || this.info.thumbup)}>
               <BsHandThumbsUp></BsHandThumbsUp>
               {this.props.post.postNumOfThumb}
             </Button>
