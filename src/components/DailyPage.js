@@ -18,7 +18,24 @@ class DailyPage extends React.Component {
   }
 
   getNews() {
-    fetch("http://localhost:8080/daily")
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": ["Origin", "Content-Type", "Access-Control-Request-Credentials", "Cookie", "Access-Control-Request-Methods"],
+        "Access-Control-Request-Methods": ["POST"],
+      },
+      withCredentials: true,
+      credentials: "include",
+      body: JSON.stringify({
+        url: "https://news.google.com/rss"
+      }),
+    };
+    fetch(process.env.REACT_APP_REQUEST_NEWS_URI + "/parse", requestOptions)
+      .then((response) => {console.log(response.json())})
+      .catch((e) => {console.log("update news request rejected")})
+    fetch(process.env.REACT_APP_REQUEST_URI + "/news")
       .then((response) => response.json())
       .then((responseJSON) => this.setState({ news: responseJSON }));
   }

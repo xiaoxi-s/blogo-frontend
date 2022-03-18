@@ -7,7 +7,6 @@ import "./NewsCard.css";
 
 class NewsCard extends React.Component {
   render() {
-      console.log(parse(this.props.news.description))
     return (
       <div className="newscard">
         <Card
