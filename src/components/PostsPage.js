@@ -74,6 +74,7 @@ class PostsPage extends React.Component {
               return (
                 <Row key={"row-" + post.postID}>
                   <PostCard
+                    key={post.postID + thumbup}
                     info={{ post: post, thumbup: thumbup, signin: this.info.signin, username: this.info.username }}
                     thumbupButtonCallback={this.getPostsIDThumbupedByUser}
                   ></PostCard>
