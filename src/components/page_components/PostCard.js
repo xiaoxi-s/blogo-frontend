@@ -14,7 +14,7 @@ class PostCard extends React.Component {
     this.thumbupPost = this.thumbupPost.bind(this)
     this.thumbupButtonCallback = this.props.thumbupButtonCallback
   }
-  
+
   thumbupPost() {
     const requestOptions = {
       method: "POST",
@@ -47,7 +47,7 @@ class PostCard extends React.Component {
         } else {
           this.thumbupButtonCallback()
         }
-      });
+      }).catch((e) => console.log(e))
   }
 
   render() {
@@ -62,7 +62,7 @@ class PostCard extends React.Component {
 
     var postImgSrc;
     if (post.postImg === undefined) {
-      postImgSrc = "./img/pics/" + hashForImages(post.postTitle)%10 + ".jpg" 
+      postImgSrc = "./img/pics/" + hashForImages(post.postTitle) % 10 + ".jpg"
     }
 
     return (

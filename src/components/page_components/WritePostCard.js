@@ -95,7 +95,7 @@ class WritePostCard extends React.Component {
               navigate: true,
             });
           }
-        });
+        }).catch((e) => console.log(e))
     };
 
     return (

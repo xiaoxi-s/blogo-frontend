@@ -114,6 +114,7 @@ class App extends React.Component {
 
     const appSignOutCallback = () => {
       fetch(process.env.REACT_APP_REQUEST_URI + "/signout", {method: "POST"})
+        .catch((e) => console.log(e))
       myStorage.removeItem("signin")
       myStorage.removeItem("username")
       this.setState({

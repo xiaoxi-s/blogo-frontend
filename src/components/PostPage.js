@@ -45,15 +45,11 @@ class PostPageInner extends React.Component {
   }
 
   getPost() {
-    try {
-      fetch(process.env.REACT_APP_REQUEST_URI + "/posts/" + this.props.postID)
-        .then((response) => response.json())
-        .then((data) => {
-          this.setState({ posts: [data] });
-        });
-    } catch (e) {
-      this.setState({ posts: [] });
-    }
+    fetch(process.env.REACT_APP_REQUEST_URI + "/posts/" + this.props.postID)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ posts: [data] });
+      }).catch((e) => console.log(e));
   }
 
   getPostComments() {
@@ -63,6 +59,7 @@ class PostPageInner extends React.Component {
         this.setState({ comments: responesJSON });
       })
       .catch((e) => {
+        console.log(e)
         this.setState({ comments: [] });
       });
   }
@@ -91,6 +88,7 @@ class PostPageInner extends React.Component {
         this.setState({ commentsIDByUser: responesJSON });
       })
       .catch((e) => {
+        console.log(e)
         this.setState({ commentsIDByUser: [] });
       });
   }
@@ -120,6 +118,7 @@ class PostPageInner extends React.Component {
         this.setState({ commentsIDThumbupedByUser: responseJSON });
       })
       .catch((e) => {
+        console.log(e)
         this.setState({ commentsIDThumbupedByUser: [] });
       });
   }
@@ -148,6 +147,7 @@ class PostPageInner extends React.Component {
         this.setState({ postsThumbupedByUser: responseJSON });
       })
       .catch((e) => {
+        console.log(e)
         this.setState({ postsThumbupedByUser: [] });
       })
   }

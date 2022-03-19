@@ -51,7 +51,7 @@ class WriteCommentCard extends React.Component {
               commentToID: responseJSON.commentToID,
             }, () => window.location.reload(true));
           }
-        });
+        }).catch((e) => console.log(e))
     };
     return (
       <div className="writecommentarea">

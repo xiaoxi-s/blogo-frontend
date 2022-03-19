@@ -48,8 +48,7 @@ class Comment extends React.Component {
         } else {
           this.thumbupButtonCallback()
         }
-      });
-
+      }).catch((e) => console.log(e))
   }
 
 

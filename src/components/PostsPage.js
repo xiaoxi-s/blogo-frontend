@@ -8,7 +8,7 @@ class PostsPage extends React.Component {
     super(props)
     this.info = props.info
     this.username = this.info.username
-    
+
     this.state = {
       posts: [],
       postsThumbupedByUser: [],
@@ -26,17 +26,13 @@ class PostsPage extends React.Component {
   }
 
   getPosts() {
-    try {
-      fetch(process.env.REACT_APP_REQUEST_URI + "/posts", {
-          credentials: "same-origin",
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          this.setState({ posts: data });
-        });
-    } catch (e) {
-      this.setState({ posts: [] });
-    }
+    fetch(process.env.REACT_APP_REQUEST_URI + "/posts", {
+      credentials: "same-origin",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ posts: data });
+      }).catch((e) => { console.log(e) })
   }
 
   getPostsIDThumbupedByUser() {
@@ -77,9 +73,9 @@ class PostsPage extends React.Component {
               const thumbup = (post.username === this.info.username || this.state.postsThumbupedByUser.includes(post.postID))
               return (
                 <Row key={"row-" + post.postID}>
-                  <PostCard  
-                   info={{post: post, thumbup: thumbup, signin: this.info.signin, username: this.info.username}} 
-                   thumbupButtonCallback={this.getPostsIDThumbupedByUser}
+                  <PostCard
+                    info={{ post: post, thumbup: thumbup, signin: this.info.signin, username: this.info.username }}
+                    thumbupButtonCallback={this.getPostsIDThumbupedByUser}
                   ></PostCard>
                 </Row>
               );

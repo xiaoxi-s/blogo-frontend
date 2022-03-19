@@ -33,13 +33,13 @@ class SignupForm extends React.Component {
       process.env.REACT_APP_REQUEST_URI + "/signup",
       requestOptions
     ).then((response) => (response.json()))
-    .then((responseJSON) => {
-      if (responseJSON.error != undefined) {
-        this.setState({ signinFailInfo: responseJSON.error});
-      } else {
-        this.submitButtonCallback(this.state.username);
-      }
-    });
+      .then((responseJSON) => {
+        if (responseJSON.error != undefined) {
+          this.setState({ signinFailInfo: responseJSON.error });
+        } else {
+          this.submitButtonCallback(this.state.username);
+        }
+      }).catch((e) => { console.log(e) })
   }
 
   render() {
@@ -99,6 +99,18 @@ class SigninForm extends React.Component {
   submitForSigninVerification() {
     const requestOptions = {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": [
+          "Origin",
+          "Content-Type",
+          "Access-Control-Request-Credentials",
+          "Cookie",
+          "Access-Control-Request-Methods",
+        ],
+        "Access-Control-Request-Methods": ["POST"],
+      },
       credentials: 'include',
       withCredentials: true,
       body: JSON.stringify({
@@ -110,13 +122,13 @@ class SigninForm extends React.Component {
       process.env.REACT_APP_REQUEST_URI + "/signin",
       requestOptions
     ).then((response) => response.json())
-    .then((responseJSON) => {
-      if (responseJSON.error != undefined) {
-        this.setState({ signinFailInfo: responseJSON.error});
-      } else {
-        this.submitButtonCallback(this.state.username);
-      }
-    });
+      .then((responseJSON) => {
+        if (responseJSON.error != undefined) {
+          this.setState({ signinFailInfo: responseJSON.error });
+        } else {
+          this.submitButtonCallback(this.state.username);
+        }
+      }).catch((e) => { console.log(e) })
   }
 
   render() {
