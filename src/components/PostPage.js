@@ -30,7 +30,7 @@ class PostPageInner extends React.Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.getPost = this.getPost.bind(this)
     this.getPostComments = this.getPostComments.bind(this)
     this.getCommentsThumbupedByUser = this.getCommentsThumbupedByUser.bind(this)
