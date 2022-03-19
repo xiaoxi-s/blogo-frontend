@@ -12,6 +12,42 @@ class Post extends React.Component {
     this.info = props.info
     this.thumbupPostButtonCallback = props.thumbupPostButtonCallback 
   }
+
+  thumbupPost() {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Credentials": true,
+        "Access-Control-Request-Headers": [
+          "Origin",
+          "Content-Type",
+          "Access-Control-Request-Credentials",
+          "Cookie",
+          "Access-Control-Request-Methods",
+        ],
+        "Access-Control-Request-Methods": ["POST"],
+      },
+      withCredentials: true,
+      credentials: "include",
+      body: JSON.stringify({
+        username: this.username,
+      }),
+    };
+    fetch(
+      process.env.REACT_APP_REQUEST_URI + "/posts/thumbup/" + this.comment.commentID,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        if (responseJSON.error !== undefined) {
+          throw "thumbup failed";
+        } else {
+          this.thumbupPostButtonCallback()
+        }
+      }).catch((e) => console.log(e))
+  }
+
   render() {
     const hashForImages = function (cardTitle) {
       var h = 0,
@@ -46,7 +82,7 @@ class Post extends React.Component {
             <Card.Text>
               {this.props.post.postContent}
             </Card.Text>
-            <Button variant="outline-primary" className="mr-auto" disabled={ (!this.info.signin || this.info.thumbup)}>
+            <Button variant="outline-primary" className="mr-auto" disabled={ (!this.info.signin || this.info.thumbup)} onClick={this.thumbupPost}>
               <BsHandThumbsUp></BsHandThumbsUp>
               {this.props.post.postNumOfThumb}
             </Button>
