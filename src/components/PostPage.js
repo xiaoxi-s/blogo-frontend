@@ -30,17 +30,18 @@ class PostPageInner extends React.Component {
     };
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     this.getPost = this.getPost.bind(this)
     this.getPostComments = this.getPostComments.bind(this)
-    this.getCommentsByUser = this.getCommentsByUser.bind(this)
     this.getCommentsThumbupedByUser = this.getCommentsThumbupedByUser.bind(this)
+    this.getPostIDsThumbupedByUser = this.getPostIDsThumbupedByUser.bind(this)
     if (this.props.posts === undefined)
       // if a post is already given, just render it!
       this.getPost()
     this.getPostComments()
     if (this.info.signin) {
       this.getCommentsThumbupedByUser() 
+      this.getPostIDsThumbupedByUser()
     }
   }
 
@@ -61,35 +62,6 @@ class PostPageInner extends React.Component {
       .catch((e) => {
         console.log(e)
         this.setState({ comments: [] });
-      });
-  }
-
-  getCommentsByUser() {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Request-Credentials": true,
-        "Access-Control-Request-Headers": [
-          "Origin",
-          "Content-Type",
-          "Access-Control-Request-Credentials",
-          "Cookie",
-          "Access-Control-Request-Methods",
-        ],
-        "Access-Control-Request-Methods": ["GET"],
-      },
-      withCredentials: true,
-      credentials: "include",
-    };
-    fetch(process.env.REACT_APP_REQUEST_URI + "/comments/by/" + this.info.username, requestOptions)
-      .then((response) => response.json())
-      .then((responesJSON) => {
-        this.setState({ commentsIDByUser: responesJSON });
-      })
-      .catch((e) => {
-        console.log(e)
-        this.setState({ commentsIDByUser: [] });
       });
   }
 
@@ -114,7 +86,6 @@ class PostPageInner extends React.Component {
     fetch(process.env.REACT_APP_REQUEST_URI + "/comments/thumbupedby/" + this.info.username, requestOptions)
       .then((response) => response.json())
       .then((responseJSON) => {
-        console.log(responseJSON)
         this.setState({ commentsIDThumbupedByUser: responseJSON });
       })
       .catch((e) => {
@@ -123,7 +94,7 @@ class PostPageInner extends React.Component {
       });
   }
 
-  getPostsIDThumbupedByUser() {
+  getPostIDsThumbupedByUser() {
     const requestOptions = {
       method: "GET",
       headers: {
@@ -144,7 +115,7 @@ class PostPageInner extends React.Component {
     fetch(process.env.REACT_APP_REQUEST_URI + "/posts/thumbupedby/" + this.info.username, requestOptions)
       .then((response) => response.json())
       .then((responseJSON) => {
-        this.setState({ postsThumbupedByUser: responseJSON });
+        this.setState({postsThumbupedByUser : responseJSON });
       })
       .catch((e) => {
         console.log(e)
@@ -161,6 +132,9 @@ class PostPageInner extends React.Component {
       username: this.info.username,
       signin: this.info.signin
     };
+    if (posts.length > 0) {
+      console.log(this.state.postsThumbupedByUser.includes(posts[0].postID))
+    }
     return (
       <div>
         {posts.length === 1 && (
@@ -169,12 +143,13 @@ class PostPageInner extends React.Component {
               return (
                 <Row key={"row-" + post.postID}>
                   <Post post={post} 
-                    key={post.postID}
+                    key={post.postID + (post.username === this.info.username || this.state.postsThumbupedByUser.includes(post.postID))}
                     info={{
+                      username: this.info.username,
                       signin: this.info.signin,
                       thumbup: (post.username === this.info.username || this.state.postsThumbupedByUser.includes(post.postID))
                     }}
-                    thumbupPostButtonCallback={this.getCommentsThumbupedByUser}
+                    thumbupPostButtonCallback={this.getPostIDsThumbupedByUser}
                   ></Post>
                 </Row>
               );
@@ -186,7 +161,9 @@ class PostPageInner extends React.Component {
           comments.map((comment, ind) => {
             return (
               <Row key={"row" + comment.commentID}>
-                <Comment info={{comment: comment, 
+                <Comment 
+                key= {comment.commentID + (comment.username === this.info.username || this.state.commentsIDThumbupedByUser.includes(comment.commentID))}
+                info={{comment: comment, 
                                 username: this.info.username,
                                 signin: this.info.signin, 
                                 thumbuped: comment.username === this.info.username || this.state.commentsIDThumbupedByUser.includes(comment.commentID)

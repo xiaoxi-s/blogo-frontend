@@ -11,6 +11,7 @@ class Post extends React.Component {
     super(props)
     this.info = props.info
     this.thumbupPostButtonCallback = props.thumbupPostButtonCallback 
+    this.thumbupPost = this.thumbupPost.bind(this)
   }
 
   thumbupPost() {
@@ -31,11 +32,11 @@ class Post extends React.Component {
       withCredentials: true,
       credentials: "include",
       body: JSON.stringify({
-        username: this.username,
+        username: this.info.username,
       }),
     };
     fetch(
-      process.env.REACT_APP_REQUEST_URI + "/posts/thumbup/" + this.comment.commentID,
+      process.env.REACT_APP_REQUEST_URI + "/posts/thumbup/" + this.props.post.postID,
       requestOptions
     )
       .then((response) => response.json())
